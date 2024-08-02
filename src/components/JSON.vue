@@ -102,7 +102,7 @@
       <!-- TODO: CODE TO GET TOP SELLERS HERE -->
       <p>We operate in:</p>
       <ul>
-        {{ bookstores.topSellers }}
+        {{ bookstores.countries.join(',') }}
       </ul>
       <p>Our #1 seller:</p>
       <ul>
