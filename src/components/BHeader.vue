@@ -20,18 +20,54 @@
             >Logout</router-link
           >
         </li>
+        <li class="nav-item">
+          <router-link to="/fireLogin" class="nav-link" active-class="active"
+            >Firebase Login</router-link
+          >
+        </li>
+        <li class="nav-item">
+          <router-link to="/fireRegister" class="nav-link" active-class="active"
+            >Firebase Register</router-link
+          >
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" @click="firebaseLogout">Log out</button>
+        </li>
+        <li class="nav-item">
+          <router-link to="/addBook" class="nav-link" active-class="active">Add Book</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/updateDelete" class="nav-link" active-class="active"
+            >Update & Delete Book</router-link
+          >
+        </li>
       </ul>
     </header>
   </div>
 </template>
 
 <script setup>
+import router from '@/router'
 import { auth } from '../utils/Auth.js'
+import { getAuth, signOut } from 'firebase/auth'
 
 const { isLoggedIn } = auth()
 const { logout } = auth()
 const logOut = () => {
   logout()
+}
+
+const authentication = getAuth()
+const firebaseLogout = () => {
+  signOut(authentication)
+    .then(() => {
+      alert('Sign out success')
+      router.push('/fireLogin')
+      console.log(authentication.currentUser)
+    })
+    .catch((error) => {
+      console.log('error: ', error)
+    })
 }
 </script>
 
