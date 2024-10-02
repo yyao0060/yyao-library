@@ -41,6 +41,21 @@
             >Update & Delete Book</router-link
           >
         </li>
+        <li class="nav-item">
+          <router-link to="/getbookcount" class="nav-link" active-class="active"
+            >Get Book Count</router-link
+          >
+        </li>
+        <li class="nav-item">
+          <router-link to="/weatherview" class="nav-link" active-class="active"
+            >Get Weather</router-link
+          >
+        </li>
+        <li class="nav-item">
+          <router-link to="/countbookapi" class="nav-link" active-class="active"
+            >Get Weather</router-link
+          >
+        </li>
       </ul>
     </header>
   </div>

@@ -8,6 +8,9 @@ import FirebaseRegisterView from '../views/FirebaseRegisterView.vue'
 import AdminView from '../views/AdminView.vue'
 import AddBookView from '../views/AddBookView.vue'
 import UpdateDeleteBookView from '../views/UpdateDeleteBookView.vue'
+import GetBookCountView from '../views/GetBookCountView.vue'
+import WeatherView from '../views/WeatherView.vue'
+import CountBookAPI from '../views/CountBookAPI.vue'
 import { auth } from '../utils/Auth.js'
 
 const { isLoggedIn } = auth()
@@ -57,6 +60,21 @@ const routes = [
     path: '/updateDelete',
     name: 'UpdateDelete',
     component: UpdateDeleteBookView
+  },
+  {
+    path: '/getbookcount',
+    name: 'GetBookCount',
+    component: GetBookCountView
+  },
+  {
+    path: '/weatherview',
+    name: 'WeatherView',
+    component: WeatherView
+  },
+  {
+    path: '/countbookapi',
+    name: 'CountBookAPI',
+    component: CountBookAPI
   }
 ]
 

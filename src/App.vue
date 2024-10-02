@@ -4,11 +4,19 @@
 import JSON from './components/JSON.vue'
 import FORM from './components/FORM.vue'
 import BHeader from './components/BHeader.vue'
+import CountBookAPI from './views/CountBookAPI.vue'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const showHeader = computed(() => {
+  return route.name !== 'CountBookAPI'
+})
 </script>
 
 <template>
   <div class="main-container">
-    <header>
+    <header v-if="showHeader">
       <BHeader />
     </header>
 
