@@ -18,52 +18,63 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
+
 const apikey = '5cbf2db5e421e1f9f4e416cf7716bdbd'
-export default {
-  name: 'App',
-  data() {
-    return {
-      city: '',
-      weatherData: null,
-      hourlyForecast: [],
-      dailyForecast: []
-    }
-  },
-  computed: {
-    temperature() {
-      return this.weatherData ? Math.floor(this.weatherData.main.temp - 273) : null
-    },
-    iconUrl() {
-      return this.weatherData
-        ? `http://api.openweathermap.org/img/w/${this.weatherData.weather[0].icon}.png`
-        : null
-    }
-  },
-  mounted() {
-    this.fetchCurrentLocationWeather()
-  },
-  methods: {
-    async fetchCurrentLocationWeather() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-          const { latitude, longitude } = position.coords
-          const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apikey}`
-          await this.fetchWeatherData(url)
-        })
-      }
-    },
-    async fetchWeatherData(url) {
-      try {
-        const response = await axios.get(url)
-        this.weatherData = response.data
-      } catch (error) {
-        console.error('Error fetching weather data:', error)
-      }
-    }
+const city = ref('')
+const weatherData = ref(null)
+
+const temperature = computed(() => {
+  return weatherData.value ? Math.floor(weatherData.value.main.temp - 273) : null
+})
+
+const iconUrl = computed(() => {
+  return weatherData.value
+    ? `http://api.openweathermap.org/img/w/${weatherData.value.weather[0].icon}.png`
+    : null
+})
+
+const fetchCurrentLocationWeather = async () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const { latitude, longitude } = position.coords
+      const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apikey}`
+      await fetchWeatherData(url)
+    })
   }
 }
+
+const fetchWeatherData = async (url) => {
+  try {
+    const response = await axios.get(url)
+    weatherData.value = response.data
+  } catch (error) {
+    console.error('Error fetching weather data:', error)
+  }
+}
+
+const searchByCity = async () => {
+  try {
+    const responseLocation = await axios.get(
+      `https://api.openweathermap.org/geo/1.0/direct?q=${city.value}&appid=${apikey}`
+    )
+    // weatherData.value = responseLocation.data;
+    console.log(responseLocation.data[0])
+    const lat = responseLocation.data[0].lat
+    const lon = responseLocation.data[0].lon
+    const url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apikey}`
+    await fetchWeatherData(url)
+    console.log(lat, lon)
+  } catch (error) {
+    console.error('Error fetching Location data:', error)
+  }
+}
+
+onMounted(() => {
+  fetchCurrentLocationWeather()
+})
 </script>
 
 <style scoped></style>

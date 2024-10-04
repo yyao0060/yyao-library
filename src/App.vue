@@ -9,9 +9,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const showHeader = computed(() => {
-  return route.name !== 'CountBookAPI'
-})
+const showHeader = computed(() => route.name !== 'CountBookAPI' && route.name !== 'GetAllBooksAPI')
 </script>
 
 <template>

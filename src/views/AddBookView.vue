@@ -20,32 +20,49 @@ import { ref } from 'vue'
 import { collection, addDoc } from 'firebase/firestore'
 import db from '../firebase/init.js'
 import BookList from '../components/BookList.vue'
+import axios from 'axios'
 // Define reactive variables
 const isbn = ref('')
 const name = ref('')
+const error = ref(null)
 
 // Function to add a book
+// const addBook = async () => {
+//   try {
+//     const isbnNumber = Number(isbn.value)
+//     if (isNaN(isbnNumber)) {
+//       alert('ISBN must be a valid number')
+//       return
+//     }
+
+//     // Add document to Firestore
+//     await addDoc(collection(db, 'books'), {
+//       isbn: isbnNumber,
+//       name: name.value
+//     })
+
+//     // Reset form fields
+//     isbn.value = ''
+//     name.value = ''
+
+//     alert('Book added successfully!')
+//   } catch (error) {
+//     console.error('Error adding book:', error)
+//   }
+// }
+
 const addBook = async () => {
   try {
-    const isbnNumber = Number(isbn.value)
-    if (isNaN(isbnNumber)) {
-      alert('ISBN must be a valid number')
-      return
-    }
-
-    // Add document to Firestore
-    await addDoc(collection(db, 'books'), {
-      isbn: isbnNumber,
+    const response = await axios.post('https://addbook-sgv5r5k3pa-uc.a.run.app', {
+      isbn: Number(isbn.value),
       name: name.value
     })
-
-    // Reset form fields
-    isbn.value = ''
-    name.value = ''
-
-    alert('Book added successfully!')
-  } catch (error) {
-    console.error('Error adding book:', error)
+    alert('Add Book Success')
+    // count.value = response.data.count
+    console.log('response', response.data)
+    error.value = null
+  } catch (err) {
+    console.error('Error adding book:', err)
   }
 }
 </script>
